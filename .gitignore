@@ -10,3 +10,6 @@
 /TodoManager.Backend/bin/Debug/net8.0
 /TodoManager.Backend/obj
 /TodoManager.Frontend/.vscode
+/TodoManager.Backend/bin/Release/net8.0
+/TodoManager.Backend/.config
+/TodoManager.Backend/Properties/PublishProfiles
