@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/bprof/CopilotIndices/17.13.441.19478
+/.vs/bprof/FileContentIndex
+/.vs/bprof/v17
+/.vs
+/TodoManager.Backend/.vs
+/TodoManager.Backend/bin/Debug/net8.0
+/TodoManager.Backend/obj
+/TodoManager.Frontend/.vscode
