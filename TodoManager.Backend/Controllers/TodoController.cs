@@ -51,9 +51,14 @@ namespace TodoManager.Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Todo>> GetTodos()
+        public async Task<List<TodoViewDto>> GetTodos()
         {
-            return await ctx.Todos.AsNoTracking().ToListAsync();
+            return await ctx.Todos.AsNoTracking().Select(z => new TodoViewDto()
+            {
+                Id = z.Id,
+                CreatedAt = z.CreatedAt,
+                Text = z.Text
+            }).ToListAsync();
         }
     }
 }
