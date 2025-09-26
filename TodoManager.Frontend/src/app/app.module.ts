@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ConfigService } from './config.service';
 import { CreateComponent } from './create/create.component';
 import { ListComponent } from './list/list.component';
 
@@ -22,12 +21,7 @@ import { ListComponent } from './list/list.component';
     NgbModule,
     FormsModule
   ],
-  providers: [provideHttpClient(), {
-    provide: APP_INITIALIZER,
-    useFactory: (cfg: ConfigService) => () => cfg.load(),
-    deps: [ConfigService],
-    multi: true
-  }],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
