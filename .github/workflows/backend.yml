@@ -19,8 +19,11 @@ jobs:
       REMOTE_RELEASES: /var/backend/releases      # ide mennek a verziók
       REMOTE_CURRENT: /var/backend/current        # symlink az aktuális release-re
       SERVICE_NAME: todobackend
+      FRONTEND_URL: https://peldaszerver.hu
+      SSH_HOST: peldaszerver.hu
+      SSH_USER: root
       # --- SECRET-ek (Repo Settings → Secrets and variables → Actions) ---
-      # SSH_HOST, SSH_USER, SSH_KEY
+      # SSH_KEY, SSH_PASS
       # opcionális: REMOTE_OWNER pl. www-data:www-data
     steps:
       - name: Checkout
@@ -62,8 +65,8 @@ jobs:
       - name: Upload package via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASS }}
           source: "app-${{ github.sha }}.tar.gz"
@@ -72,8 +75,8 @@ jobs:
       - name: Deploy on server (atomic symlink switch + systemd restart)
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASS }}
           script: |
@@ -95,16 +98,19 @@ jobs:
             sudo tar -xzf "/tmp/app-${{ github.sha }}.tar.gz" -C "$NEW_RELEASE"
             sudo rm -f "/tmp/app-${{ github.sha }}.tar.gz"
 
-            # appsettings.json módosítása (db:conn -> secretből)
+            # appsettings.json módosítása (db:conn + settings:frontend -> secretből)
             if command -v jq >/dev/null; then
-              sudo jq --arg conn "${{ secrets.DB_CONN }}" \
-                '.db.conn = $conn' \
+              sudo jq \
+                --arg conn "${{ secrets.DB_CONN }}" \
+                --arg frontend "${{ env.FRONTEND_URL }}" \
+                '.db.conn = $conn | .settings.frontend = $frontend' \
                 "$NEW_RELEASE/appsettings.json" | sudo tee "$NEW_RELEASE/appsettings.json.tmp" > /dev/null
               sudo mv "$NEW_RELEASE/appsettings.json.tmp" "$NEW_RELEASE/appsettings.json"
             else
               echo "jq nincs telepítve, telepíteni kell!"
               exit 1
             fi
+
 
             # (Opcionális) tulajdonos állítás
             if [ -n "${{ secrets.REMOTE_OWNER || '' }}" ]; then
