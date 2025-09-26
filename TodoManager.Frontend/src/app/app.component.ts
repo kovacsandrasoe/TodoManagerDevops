@@ -9,13 +9,6 @@ import { TodoCreateDto } from './todo-create-dto';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  actual: TodoCreateDto = new TodoCreateDto();
-  constructor(public service: TodoService) { }
-
-  create(){
-    this.service.create(this.actual).subscribe(t => {
-      this.actual = new TodoCreateDto();
-    })
-  }
+  
 
 }

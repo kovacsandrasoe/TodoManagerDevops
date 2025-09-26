@@ -1,0 +1,9 @@
+<div class="mt-1">
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center"
+      *ngFor="let x of service.todos | async">
+      <span><b>{{x.text}}</b> ({{x.createdAt | date:'yyyy.MM.dd HH:mm'}})</span>
+      <button (click)="service.delete(x.id).subscribe()" class="btn btn-sm btn-danger">Remove</button>
+    </li>
+  </ul>
+</div>
