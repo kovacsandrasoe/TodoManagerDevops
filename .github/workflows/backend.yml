@@ -14,6 +14,7 @@ jobs:
       PUBLISH_DIR: publish
       RUNTIME: linux-x64
       SELF_CONTAINED: "true"
+      PUBLISH_SINGLE_FILE: "true"
       # Remote könyvtárak (a Debian szerveren)
       REMOTE_BASE: /var/backend                   # gyökér a deployed appnak
       REMOTE_RELEASES: /var/backend/releases      # ide mennek a verziók
@@ -50,6 +51,7 @@ jobs:
           dotnet publish ${{ env.PROJECT_PATH }} \
             -c Release \
             -r ${{ env.RUNTIME }} \
+            -p:PublishSingleFile=${{ env.PUBLISH_SINGLE_FILE }} \
             --self-contained ${{ env.SELF_CONTAINED }} \
             -o ${{ env.PUBLISH_DIR }}
 
@@ -60,7 +62,7 @@ jobs:
       - name: Add remote host key
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ env.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload package via SCP
         uses: appleboy/scp-action@v0.1.7
