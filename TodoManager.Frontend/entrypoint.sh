@@ -2,8 +2,8 @@
 #!/usr/bin/env sh
 set -e
 
-TEMPLATE="/usr/share/nginx/html/assets/config.template.json"
-TARGET="/usr/share/nginx/html/assets/config.json"
+TEMPLATE="/usr/share/nginx/html/config.template.json"
+TARGET="/usr/share/nginx/html/config.json"
 
 if [ -f "$TEMPLATE" ]; then
   if [ -z "${BACKEND_URL}" ]; then
