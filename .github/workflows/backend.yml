@@ -27,3 +27,13 @@ jobs:
           file: ./TodoManager.Backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/todomanager-backend:latest
+
+      - name: Deploy on server (atomic symlink switch + systemd restart)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: peldaszerver.hu
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASS }}
+          script: |
+            ./backend-refresh.sh
