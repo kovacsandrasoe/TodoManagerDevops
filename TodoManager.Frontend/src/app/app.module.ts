@@ -8,6 +8,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CreateComponent } from './create/create.component';
 import { ListComponent } from './list/list.component';
+import { ConfigService } from './config.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,12 @@ import { ListComponent } from './list/list.component';
     NgbModule,
     FormsModule
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(), {
+    provide: APP_INITIALIZER,
+    useFactory: (cfg: ConfigService) => () => cfg.load(),
+    deps: [ConfigService],
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
