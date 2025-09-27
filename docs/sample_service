@@ -1,0 +1,15 @@
+[Unit]
+Description=ASP.NET Core self-contained WebAPI
+After=network.target
+
+[Service]
+WorkingDirectory=/var/backend
+ExecStart=/var/backend/TodoBackend
+Restart=always
+RestartSec=5
+Environment=ASPNETCORE_ENVIRONMENT=Production
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

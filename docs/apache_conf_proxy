@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+        ServerName api.peldaszerver.hu
+        ServerAlias api.peldaszerver.hu
+        RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}
+        Protocols             h2 http/1.1
+        ProxyPreserveHost     On
+        ProxyPass             / http://127.0.0.1:6500/
+        ProxyPassReverse      / http://127.0.0.1:6500/
+
+        ErrorLog ${APACHE_LOG_DIR}_error.log
+        CustomLog ${APACHE_LOG_DIR}_access.log common
+</VirtualHost>

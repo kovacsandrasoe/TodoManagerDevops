@@ -1,0 +1,14 @@
+apt update
+apt install gnupg2 apt-transport-https wget curl
+
+wget -q -O- https://packages.microsoft.com/keys/microsoft.asc | \
+gpg --dearmor | tee /usr/share/keyrings/microsoft.gpg > /dev/null 2>&1
+
+echo "deb [signed-by=/usr/share/keyrings/microsoft.gpg arch=amd64,armhf,arm64] https://packages.microsoft.com/ubuntu/22.04/mssql-server-2022 jammy main" | \
+tee /etc/apt/sources.list.d/mssql-server-2022.list
+
+apt update
+
+apt install mssql-server
+
+/opt/mssql/bin/mssql-conf setup
