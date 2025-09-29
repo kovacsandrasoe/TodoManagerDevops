@@ -57,6 +57,7 @@ jobs:
         run: dotnet build -c Release
 
       - name: dotnet publish
+        working-directory: ./TodoManager.Backend
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
